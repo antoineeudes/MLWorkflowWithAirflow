@@ -9,6 +9,7 @@ Run
 ```bash
 export AIRFLOW_HOME=/path/to/this/directory
 pip install -r requirements.txt
+chmod a+x download_data.sh
 make db/init
 ```
 

@@ -1,1 +1,6 @@
-/venv
+venv
+data
+logs
+airflow-webserver.pid
+airflow.db
+*/__pycache__
