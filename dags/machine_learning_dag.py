@@ -1,8 +1,14 @@
 from datetime import timedelta
+
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
-import os
+from airflow.operators.python_operator import PythonOperator
 
+import os
+import sys
+
+sys.path.insert(1, os.path.join(os.environ.get('AIRFLOW_HOME'), 'src'))
+from data_cleaning import clean_data
 
 default_args = {
     'owner': 'antoineeudes',
@@ -12,14 +18,14 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=1),
+    'retry_delay': timedelta(seconds=15),
 }
 
 dag = DAG(
     'ML_training',
     default_args=default_args,
     description='This DAG is used to train a machine learning model',
-    schedule_interval=timedelta(minutes=1),
+    schedule_interval=timedelta(seconds=15),
 )
 
 t1 = BashOperator(
@@ -28,7 +34,13 @@ t1 = BashOperator(
     dag=dag,
 )
 
-t2 = BashOperator(
+t2 = PythonOperator(
+    task_id='clean_data',
+    python_callable=clean_data,
+    dag=dag,
+)
+
+t3 = BashOperator(
     task_id='search_optimal_hyper_parameters1',
     depends_on_past=False,
     bash_command='sleep 5',
@@ -36,7 +48,7 @@ t2 = BashOperator(
     dag=dag,
 )
 
-t3 = BashOperator(
+t4 = BashOperator(
     task_id='search_optimal_hyper_parameters2',
     depends_on_past=False,
     bash_command='sleep 5',
@@ -44,7 +56,7 @@ t3 = BashOperator(
     dag=dag,
 )
 
-t4 = BashOperator(
+t5 = BashOperator(
     task_id='train',
     depends_on_past=False,
     bash_command='sleep 5',
@@ -52,4 +64,4 @@ t4 = BashOperator(
     dag=dag,
 )
 
-t1 >> [t2, t3] >> t4
+t1 >> t2 >> [t3, t4] >> t5
