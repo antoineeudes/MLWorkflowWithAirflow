@@ -4,3 +4,5 @@ logs
 airflow-webserver.pid
 airflow.db
 */__pycache__
+estimator.pickle
+local

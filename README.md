@@ -4,19 +4,24 @@ This is an example of machine learning workflow using [Airflow](https://airflow.
 
 ## Installation
 
-Run
+### Prerequisites:
+ - docker :whale:
+ - docker-compose
 
+Run
 ```bash
-export AIRFLOW_HOME=/path/to/this/directory
-pip install -r requirements.txt
-chmod a+x download_data.sh
-make db/init
+make install
 ```
 
-## Usage
-To start the webserver, run `make run/webserver`. You'll be able to see Airflow's interface on `http://localhost:8080/`.
+This will create three containers:
+ - a Postgres database
+ - a Python container running the scheduler
+ - a Python container running the webserver
 
-To start the scheduler and start the tasks, run:
+Additionaly, it will initialize the database.
+
+## Usage
+To start the webserver, the database and the scheduler, run:
 ```bash
-make run/scheduler
+make start
 ```

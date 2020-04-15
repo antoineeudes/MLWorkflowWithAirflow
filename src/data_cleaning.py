@@ -1,10 +1,8 @@
 import pandas as pd
-import os
-
-TRAINING_FILE_PATH = os.path.join(os.environ.get('AIRFLOW', 'data/cs-training.csv'))
+from utils import get_training_dataframe, save_training_dataframe_to_csv
 
 def clean_data():
-    dataframe = pd.read_csv(TRAINING_FILE_PATH).drop('Unnamed: 0', axis = 1)
+    dataframe = get_training_dataframe()
 
     dataframe.loc[
         dataframe["NumberOfTime30-59DaysPastDueNotWorse"] > 20,
@@ -44,4 +42,4 @@ def clean_data():
         "NumberOfTime60-89DaysPastDueNotWorse",
     ] = dataframe["NumberOfTime60-89DaysPastDueNotWorse"].median()
 
-    dataframe.to_csv(TRAINING_FILE_PATH)
+    save_training_dataframe_to_csv(dataframe)

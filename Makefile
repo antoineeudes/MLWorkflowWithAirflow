@@ -1,8 +1,5 @@
-run/webserver:
-	airflow webserver -p 8080
+start:
+	docker-compose up
 
-db/init:
-	airflow initdb
-
-run/scheduler:
-	airflow scheduler
+install:
+	docker-compose build && docker-compose run scheduler airflow initdb

@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  scheduler:
+    build: .
+    depends_on:
+      - db
+    command: bash -c "airflow scheduler"
+    volumes:
+      - .:/usr/src/app
+
+  webserver:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - scheduler
+    command: bash -c "airflow webserver -p 8080"
+    volumes:
+      - .:/usr/src/app
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=airflow
