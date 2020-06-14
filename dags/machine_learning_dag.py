@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from airflow import DAG
+from airflow import DAG, utils
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 
@@ -15,7 +15,7 @@ from save_model import save_model
 default_args = {
     'owner': 'antoineeudes',
     'depends_on_past': False,
-    'start_date': '2020-04-13',
+    'start_date': utils.dates.days_ago(1),
     'email': ['antoinee@theodo.co.uk'],
     'email_on_failure': False,
     'email_on_retry': False,
