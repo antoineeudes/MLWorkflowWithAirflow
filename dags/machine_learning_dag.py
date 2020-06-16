@@ -14,11 +14,8 @@ from save_model import save_model
 
 default_args = {
     'owner': 'antoineeudes',
-    'depends_on_past': False,
     'start_date': utils.dates.days_ago(1),
     'email': ['antoinee@theodo.co.uk'],
-    'email_on_failure': False,
-    'email_on_retry': False,
     'retries': 1,
     'retry_delay': timedelta(seconds=15),
 }

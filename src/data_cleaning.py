@@ -1,8 +1,11 @@
 import pandas as pd
-from utils import get_training_dataframe, save_training_dataframe_to_csv
+from utils import get_training_dataframe, save_cleaned_training_dataframe_to_csv
 
 def clean_data():
     dataframe = get_training_dataframe()
+
+    dataframe.loc[dataframe.MonthlyIncome.isnull(), 'MonthlyIncome'] = dataframe.MonthlyIncome.median()
+    dataframe.loc[dataframe.NumberOfDependents.isnull(), 'NumberOfDependents'] = dataframe.NumberOfDependents.median()
 
     dataframe.loc[
         dataframe["NumberOfTime30-59DaysPastDueNotWorse"] > 20,
@@ -42,4 +45,6 @@ def clean_data():
         "NumberOfTime60-89DaysPastDueNotWorse",
     ] = dataframe["NumberOfTime60-89DaysPastDueNotWorse"].median()
 
-    save_training_dataframe_to_csv(dataframe)
+    dataframe = dataframe.dropna()
+
+    save_cleaned_training_dataframe_to_csv(dataframe)
