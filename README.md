@@ -25,3 +25,5 @@ To start the webserver, the database and the scheduler, run:
 ```bash
 make start
 ```
+
+:tada: Browse http://localhost:8080/ to get started!
